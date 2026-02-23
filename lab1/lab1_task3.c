@@ -1,33 +1,32 @@
 // 
 
-what i need ? 
-1. A timer that fires every X seconds
-2. An ISR that runs when it fires
-3. ISR increments a counter
-4. Main loop prints the counter
-5. No printing inside ISR // 
+// what i need ? 
+// 1. A timer that fires every X seconds
+// 2. An ISR that runs when it fires
+// 3. ISR increments a counter
+// 4. Main loop prints the counter
+// 5. No printing inside ISR // 
 
 //  what i need to learn about 
 
-   1. What is the TTC timer and how does it work?
-2. What is the GIC and what does it do?
-3. What is an ISR and how does it connect to both? //
+  // 1. What is the TTC timer and how does it work?
+// 2. What is the GIC and what does it do?
+// 3. What is an ISR and how does it connect to both? //
+ 
 
-//  
-
-TTC counts to interval
+// TTC counts to interval
     ↓
-TTC signals GIC
+// TTC signals GIC
     ↓
-GIC signals CPU
+// GIC signals CPU
     ↓
-CPU runs ISR
+// CPU runs ISR
     ↓
-ISR clears interrupt, increments counter, sets flag
+// ISR clears interrupt, increments counter, sets flag
     ↓
-CPU returns to main loop
+// CPU returns to main loop
     ↓
-Main loop sees flag, prints counter // 
+// Main loop sees flag, prints counter // 
 
 #include "xil_printf.h"
 #include "xscugic.h"
