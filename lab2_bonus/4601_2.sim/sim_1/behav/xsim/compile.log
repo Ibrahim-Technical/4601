@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ibrah/4601_2/bounus_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bonus_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ibrah/4601_2/debouncer.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module debouncer_fsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ibrah/4601_2/bounus_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bonus_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ibrah/4601_2/4601_2.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
