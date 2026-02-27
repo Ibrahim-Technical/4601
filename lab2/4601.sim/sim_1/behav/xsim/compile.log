@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ibrah/4601/debouncer.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module debouncer_fsm
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ibrah/4601/the_wrapper.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module lab2_wrapper
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/ibrah/4601/debouncer_tb.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module debouncer_tb

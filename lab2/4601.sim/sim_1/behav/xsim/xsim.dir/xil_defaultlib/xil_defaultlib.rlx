@@ -1,8 +1,0 @@
-0.7
-2020.2
-Nov 14 2025
-19:37:27
-C:/Users/ibrah/4601/4601.sim/sim_1/behav/xsim/glbl.v,1756381829,verilog,,,,glbl,,,,,,,,
-C:/Users/ibrah/4601/debouncer.v,1772073013,verilog,,C:/Users/ibrah/4601/the_wrapper.v,,debouncer_fsm,,,../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
-C:/Users/ibrah/4601/debouncer_tb.v,1772001364,verilog,,,,debouncer_tb,,,../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
-C:/Users/ibrah/4601/the_wrapper.v,1772007462,verilog,,C:/Users/ibrah/4601/debouncer_tb.v,,lab2_wrapper,,,../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
