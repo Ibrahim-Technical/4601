@@ -1,0 +1,38 @@
+# ===== Vivado / Xilinx generated =====
+**/.Xil/
+**/.cache/
+**/*.cache/
+**/.runs/
+**/*.runs/
+**/.sim/
+**/*.sim/
+**/.hw/
+**/*.hw/
+**/.ip_user_files/
+**/*ip_user_files/
+**/ip_user_files/
+
+# logs / journals / reports / temp
+**/*.jou
+**/*.log
+**/*.str
+**/*.wdb
+**/*.pb
+**/*.rpx
+**/*.rpt
+**/*.dcp
+**/*.bit
+**/*.ltx
+**/*.vdi
+**/*.vds
+**/*.wcfg
+**/*.wdf
+**/*.wpc
+**/*.tmp
+**/*backup*
+**/*_backup*
+
+# OS/editor stuff
+.DS_Store
+Thumbs.db
+.vscode/
