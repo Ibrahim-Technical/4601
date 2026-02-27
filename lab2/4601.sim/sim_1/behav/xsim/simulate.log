@@ -1,0 +1,10 @@
+Time resolution is 1 ps
+[150000 ns] TEST 1: Bouncy press started
+[150000 ns] TEST 1: Bouncy press started
+[1080000 ns] TEST 1 complete — check for exactly ONE pulse
+[1180000 ns] TEST 2: Clean press started
+[1980000 ns] TEST 2 complete — check for exactly ONE pulse
+[2080000 ns] TEST 3: Sub-threshold glitch started
+[2580000 ns] TEST 3 complete — verify NO pulse on led_debounced
+[2780000 ns] ===== Simulation complete =====
+$finish called at time : 2780 ns : File "C:/Users/ibrah/4601/debouncer_tb.v" Line 142
