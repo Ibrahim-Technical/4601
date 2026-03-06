@@ -22,9 +22,9 @@
 // parameter LED_HOLD       = 50_000_000
 
 module bonus_wrapper #(
-    parameter MAX_COUNT      = 20,           // debounce window  (20 for sim, 1_000_000 for hw)
-    parameter LONG_THRESHOLD = 200,          // long press threshold (200 for sim, 100_000_000 for hw)
-    parameter LED_HOLD       = 100           // LED on duration (100 for sim, 50_000_000 for hw)
+    parameter MAX_COUNT      = 1000000,           // debounce window  (20 for sim, 1_000_000 for hw)
+    parameter LONG_THRESHOLD = 1000000000,          // long press threshold (200 for sim, 100_000_000 for hw)
+    parameter LED_HOLD       = 5000000           // LED on duration (100 for sim, 50_000_000 for hw)
 )(
     input  wire clk,
     input  wire reset_btn,

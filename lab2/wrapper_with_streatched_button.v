@@ -24,14 +24,14 @@ module lab2_wrapper(
     wire btn_out;   // <-- intermediate wire, NOT connected directly to LED
 
     debouncer_fsm #(
-        .MAX_COUNT(1_000_000)        // 10ms debounce window at 100MHz
+        .MAX_COUNT(100000000)        // 10ms debounce window at 100MHz
     ) u_debouncer (
         .clk     (clk),
         .reset   (reset_btn),
         .btn_in  (btn_sync_1),
         .btn_out (btn_out)           // goes to pulse stretcher, not LED directly
     );
-    parameter HOLD_CYCLES = 50_000_000;  // 0.5 sec 
+    parameter HOLD_CYCLES = 100_000_000;  // 0.5 sec 
 
     reg [25:0] hold_counter;
     reg        led_held;

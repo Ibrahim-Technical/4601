@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 module debouncer_fsm #(
-    parameter MAX_COUNT = 20          // Use 20 for sim, 1_000_000 for hardware
+    parameter MAX_COUNT = 100000000          // Use 20 for sim, 1_000_000 for hardware
 )(
     input  wire clk,
     input  wire reset,

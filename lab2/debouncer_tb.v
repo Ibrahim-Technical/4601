@@ -1,34 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Course: ELEC4601 - Digital and Embedded Systems Design
-// Laboratory 2: Simulation Testbench
-//
-// Module: debouncer_tb
-//
-// Description:
-//   Testbench for lab2_wrapper. Drives a realistic mechanical-bounce waveform
-//   to verify the 4-state Moore FSM debouncer.
-//
-// IMPORTANT — Before running simulation:
-//   Set MAX_COUNT = 20 inside debouncer_fsm.v so waveforms are visible.
-//   Restore MAX_COUNT = 1_000_000 before generating the hardware bitstream.
-//
-// Signals to add in XSim waveform window:
-//   tb_btn_in                      — raw stimulus you are driving
-//   DUT/btn_sync_1                 — after 2-FF synchronizer (inside wrapper)
-//   DUT/u_debouncer/state          — FSM state register
-//   DUT/u_debouncer/counter        — debounce counter value
-//   DUT/u_debouncer/timer_MAX      — counter threshold flag
-//   tb_led_debounced               — clean single-pulse output  (key signal)
-//   tb_led_raw                     — mirrors tb_btn_in directly
-//
-// Test Sequence:
-//   1. Reset
-//   2. BOUNCY PRESS   — rapid toggles before stable hold  → expect 1 pulse
-//   3. CLEAN PRESS    — no bounce at all                  → expect 1 pulse
-//   4. SHORT GLITCH   — held shorter than MAX_COUNT       → expect NO pulse
-//////////////////////////////////////////////////////////////////////////////////
-
 module debouncer_tb();
 
     // -------------------------------------------------------------------------
