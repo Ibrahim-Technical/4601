@@ -80,7 +80,7 @@ module lab3_top (
     //   controller/btnc_probe [0:0]
 
     controller #(
-        .MAX_COUNT (20)      // ← Restore to 1_000_000 for hardware!
+        .MAX_COUNT (1000000)      // ← Restore to 1_000_000 for hardware!
     ) u_ctrl (
         .clk      (clk_100mhz),
         .rst_n    (rst_n),          // SW0 slider drives reset

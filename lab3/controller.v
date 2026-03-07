@@ -40,7 +40,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module controller #(
-    parameter MAX_COUNT = 20     // Use 20 for XSim/ILA, 1_000_000 for hardware
+    parameter MAX_COUNT = 1000000     // Use 20 for XSim/ILA, 1_000_000 for hardware
 )(
     input  wire clk,
     input  wire rst_n,          // Active-LOW synchronous reset (driven by ~sw0_sync)
