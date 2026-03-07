@@ -1,28 +1,35 @@
-// File: lab3_top.v
-// Board: ZedBoard (Zynq-7000)
-// Lab 3: Full FPGA flow + ILA instrumentation
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Course:  ELEC4601 - Lab 3: FPGA Design Flow and RTL Implementation
+// Module:  lab3_top (Top-level wrapper)
 //
 // What this provides:
 //  - 100 MHz clock port
-//  - 2-FF synchronizer for async inputs (BTNC, SW0)
+//  - 2-FF synchronizer for async inputs (BTNC, SW0) via sync2.v
 //  - RAW LED path on led0 to visualize mechanical bounce (no sync)
-//  - SW0 used as synchronous active-LOW reset for the controller:
-//      SW0 slider UP   (sw0_sync = 1) → rst_n = 0 → controller in RESET
-//      SW0 slider DOWN (sw0_sync = 0) → rst_n = 1 → controller RUNNING
-//  - controller instance driving led1
-//  - ILA probe comments (connect after generating ILA IP in Vivado)
+//  - SW0 used as synchronous active-HIGH reset for the controller:
+//      SW0 slider UP   (sw0_sync = 1) → rst = 1 → controller in RESET
+//      SW0 slider DOWN (sw0_sync = 0) → rst = 0 → controller RUNNING
+//  - controller instance driving led1 via debounced_pulse
+//
+// Reset behaviour:
+//   In hardware  : Flip SW0 UP to reset the FSM, then DOWN to run.
+//   In simulation: Drive sw0_raw = 1 for reset, then sw0_raw = 0.
 //
 // IMPORTANT:
-//  - Keep ALL logic in the 100 MHz domain for this lab.
+//  - Keep ALL logic in the 100 MHz domain.
 //  - ILA MUST be clocked with the same clk_100mhz clock.
-//  - Before hardware: restore MAX_COUNT = 1_000_000 in controller.v
+//  - MAX_COUNT = 20  → XSim simulation
+//  - MAX_COUNT = 40  → ILA hardware capture
+//  - MAX_COUNT = 1_000_000 → timing closure bitstream (10 ms debounce)
+//////////////////////////////////////////////////////////////////////////////////
 
 module lab3_top (
     input  wire clk_100mhz,   // 100 MHz PL clock (XDC maps this to Y9)
     input  wire btnc_raw,     // Asynchronous push-button (Center, BTNC)
     input  wire sw0_raw,      // Asynchronous slide switch (SW0)
-    output wire led0,         // LED0 — RAW button path (shows bounce)
-    output wire led1          // LED1 — debounced controller output
+    output wire led0,         // LED0 - RAW button path (shows mechanical bounce)
+    output wire led1          // LED1 - debounced pulse from controller
 );
 
     // ----------------------------------------------------------------
@@ -33,7 +40,7 @@ module lab3_top (
 
     // ----------------------------------------------------------------
     // Synchronizers: make async inputs safe for FSM/control logic.
-    // sync2 port names: .async_in / .sync_out (professor's module).
+    // Both BTNC and SW0 are mechanical - both must be synchronized.
     // ----------------------------------------------------------------
     wire btnc_sync;
     wire sw0_sync;
@@ -51,68 +58,47 @@ module lab3_top (
     );
 
     // ----------------------------------------------------------------
-    // Reset logic
-    // SW0 slider UP   (sw0_sync = 1) → rst_n = 0 → RESET asserted
-    // SW0 slider DOWN (sw0_sync = 0) → rst_n = 1 → running normally
-    //
-    // In hardware: flip SW0 UP to reset the FSM, then DOWN to run.
-    // In simulation: drive sw0_raw = 1 for reset, then sw0_raw = 0.
+    // Reset logic - Active-HIGH synchronous reset
+    // sw0_sync drives rst directly:
+    //   SW0 slider UP   (sw0_sync = 1) → rst = 1 → RESET asserted
+    //   SW0 slider DOWN (sw0_sync = 0) → rst = 0 → running normally
     // ----------------------------------------------------------------
-    wire rst_n;
-    assign rst_n = ~sw0_sync;
+    wire rst;
+    assign rst = sw0_sync;
 
     // ----------------------------------------------------------------
-    // Controller (3-block FSM debouncer)
+    // Controller (4-state Moore debouncer)
     //
-    // MAX_COUNT = 1_000_000 → 10 ms debounce window at 100 MHz.
+    // States: IDLE → WAIT_PRESS → PRESSED → WAIT_RELEASE → IDLE
+    // Output: debounced_pulse - HIGH for exactly ONE clock cycle in PRESSED
     //
-    // *** SIMULATION / ILA REMINDER ***
-    // Set MAX_COUNT = 20 when running XSim or capturing ILA traces.
-    // ALWAYS restore to 1_000_000 before generating the final bitstream.
+    // MAX_COUNT parameter:
+    //   20        → XSim simulation
+    //   40        → ILA hardware capture (fits in 1024-sample window)
+    //   1_000_000 → Final hardware timing closure (10 ms debounce)
     // ----------------------------------------------------------------
-    wire        led1_out;
-
-    // ILA-visible signals exposed from controller (wired to ILA probes below)
-    // These are internal to controller.v and kept alive by mark_debug attribute
-    // Wire declarations here for ILA instantiation reference:
-    //   controller/state      [1:0]
-    //   controller/counter    [N:0]
-    //   controller/btnc_probe [0:0]
+    wire debounced_pulse;
 
     controller #(
-        .MAX_COUNT (1000000)      // ← Restore to 1_000_000 for hardware!
+        .MAX_COUNT (1000000)         // ← Change to 40 for ILA, 1_000_000 for timing
     ) u_ctrl (
-        .clk      (clk_100mhz),
-        .rst_n    (rst_n),          // SW0 slider drives reset
-        .btnc     (btnc_sync),      // synchronized input — NEVER use btnc_raw here
-        .led1_out (led1_out)
+        .clk            (clk_100mhz),
+        .rst            (rst),          // active-HIGH: sw0_sync
+        .btnc           (btnc_sync),    // synchronized - NEVER use btnc_raw here
+        .debounced_pulse(debounced_pulse)
     );
 
-    assign led1 = led1_out;
+    assign led1 = debounced_pulse;
 
     // ----------------------------------------------------------------
     // ILA Probing
-    // After running Synthesis → Set Up Debug wizard in Vivado:
+    // Use Vivado "Set Up Debug" wizard after synthesis to insert ILA.
+    // Signals marked (* mark_debug = "true" *) in controller.v:
+    //   state      [1:0]   - FSM state register
+    //   counter    [N:0]   - Debounce counter
+    //   btnc_probe [0:0]   - Synchronized button input
     //
-    // 1) The wizard will detect signals marked (* mark_debug = "true" *)
-    //    inside controller.v: state, counter, btnc_probe.
-    // 2) Drag these into the "Nets to Debug" panel.
-    // 3) Vivado will auto-insert an ILA core and add entries to lab3.xdc.
-    // 4) Re-run Synthesis + Implementation + Generate Bitstream.
-    //
-    // Alternatively, instantiate ILA manually here after generating
-    // ILA IP from IP Catalog:
-    //
-    // ila_0 u_ila (
-    //   .clk    (clk_100mhz),
-    //   .probe0 (u_ctrl.state),       // [1:0]
-    //   .probe1 (u_ctrl.counter),     // [$clog2(MAX_COUNT):0]
-    //   .probe2 (u_ctrl.btnc_probe),  // [0:0]
-    //   .probe3 (led1_out)            // [0:0]
-    // );
-    //
-    // NOTE: Use "Set Up Debug" wizard (Step A3 in lab guide) — it is
-    // simpler than manual IP instantiation for this lab.
+    // Do NOT manually instantiate ILA here - use the wizard (Step A3).
     // ----------------------------------------------------------------
 
 endmodule

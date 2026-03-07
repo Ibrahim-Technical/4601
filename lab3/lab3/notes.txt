@@ -1,0 +1,34 @@
+Setup = "did my signal ARRIVE in time?"
+         tCQ + tLogic + tRoute + tSetup < 10ns
+
+Hold  = "did my signal STAY long enough?"
+         tCQ + tRoute > tHold
+
+
+
+
+
+
+
+
+         Setup Slack = Required arrival time − Actual arrival time
+
+Required = Clock period − tSETUP
+         = 10ns − 0.1ns = 9.9ns
+
+Actual   = tCQ + tLOGIC + tROUTING
+         = 0.4 + 0.952 + 4.363 = 5.715ns
+
+Slack    = 9.9 − 5.715 = +4.185ns
+
+
+
+Hold Slack = Actual arrival time − tHOLD requirement
+
+Actual   = tCQ + tLOGIC + tROUTING = 0.370ns
+tHOLD    = 0.332ns
+
+Slack    = 0.370 − 0.332 = +0.038ns
+
+
+
